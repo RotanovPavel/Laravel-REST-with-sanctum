@@ -41,7 +41,7 @@ class ProductCategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        return ProductCategory::find($id);
     }
 
     /**
@@ -53,7 +53,9 @@ class ProductCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product_category = ProductCategory::find($id);
+        $product_category->update($request->all());
+        return $product_category;
     }
 
     /**
@@ -64,6 +66,19 @@ class ProductCategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return ProductCategory::destroy($id);
+
+    }
+
+    /**
+     * Search for a category name.
+     *
+     * @param  string  $name
+     * @return \Illuminate\Http\Response
+     */
+    public function search($name)
+    {
+        return ProductCategory::where('name', 'like', '%' . $name . '%')->get();
+
     }
 }
