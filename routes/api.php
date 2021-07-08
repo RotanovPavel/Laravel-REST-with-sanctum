@@ -24,6 +24,9 @@ Route::prefix('v1')->group(function()
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
 
+    Route::group(['middleware' => ['admin']], function () {
+
+    });
     Route::get('/categories', [ProductCategoryController::class, 'index']);
     Route::get('/categories/{id}', [ProductCategoryController::class, 'show']);
     Route::get('/categories/search/{name}', [ProductCategoryController::class, 'search']);
