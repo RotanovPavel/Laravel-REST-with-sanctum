@@ -23,10 +23,8 @@ Route::prefix('v1')->group(function()
 
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/forgot-password', [AuthController::class, 'forgot_password']);
 
-    Route::group(['middleware' => ['admin']], function () {
-
-    });
     Route::get('/categories', [ProductCategoryController::class, 'index']);
     Route::get('/categories/{id}', [ProductCategoryController::class, 'show']);
     Route::get('/categories/search/{name}', [ProductCategoryController::class, 'search']);
@@ -44,5 +42,14 @@ Route::prefix('v1')->group(function()
         Route::delete('/categories/{id}', [ProductCategoryController::class, 'delete']);
 
         Route::post('/logout', [AuthController::class, 'logout']);
+
+        Route::group(['middleware' => ['admin'], 'prefix' => 'admin'], function () {
+
+        });
+    });
+
+    Route::fallback(function(){
+        return response()->json([
+            'message' => 'Page Not Found.'], 404);
     });
 });
