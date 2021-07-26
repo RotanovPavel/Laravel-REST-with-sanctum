@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 
 class AuthController extends Controller
@@ -27,7 +25,7 @@ class AuthController extends Controller
         $fields = $request->validate([
             'name' => ['required', 'string'],
             'email' => ['required', 'string', 'unique:users', 'email'],
-            'phone' => ['required', 'digits:12'],
+            'phone' => ['required', 'digits:12', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
 
