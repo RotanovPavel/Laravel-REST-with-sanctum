@@ -8,6 +8,7 @@ use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
+use Throwable;
 
 
 class AuthController extends Controller
@@ -100,16 +101,16 @@ class AuthController extends Controller
             $arr = array("status" => 400, "message" => $validator->errors()->first(), "data" => array());
         } else {
             try {
-                $response = Password::sendResetLink($request->only('email'), function (Message $message) {
-                    $message->subject($this->getEmailSubject());
-                });
+                $response = Password::sendResetLink(
+                    $request->only('email')
+                );
                 switch ($response) {
                     case Password::RESET_LINK_SENT:
                         return \Response::json(array("status" => 200, "message" => trans($response), "data" => array()));
                     case Password::INVALID_USER:
                         return \Response::json(array("status" => 400, "message" => trans($response), "data" => array()));
                 }
-            } catch (Exception $e) {
+            } catch (Throwable $e) {
                 $arr = array("status" => 400, "message" => $e->getMessage(), "data" => []);
             }
         }
